@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Stylish Form{% endblock %}
+
+{% block header %}Un formulaire avec style{% endblock %}
+
+{% block content %}
+    <div class="card shadow-sm p-4">
+        <h2 class="text-center mb-4">Envoyez votre message</h2>
+        {{ form_start(form, {'attr': {'class': 'form'}}) }}
+            <div class="mb-3">
+                {{ form_label(form.message, 'Message', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.message, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.message) }}
+            </div>
+
+            <div class="mb-3">
+                {{ form_label(form.includeTimestamp, 'Inclure un horodatage ?', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.includeTimestamp, {'attr': {'class': 'form-select'}}) }}
+                {{ form_errors(form.includeTimestamp) }}
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">
+                {{ form_label(form.submit, 'Envoyer') }}
+            </button>
+        {{ form_end(form) }}
+    </div>
+
+    {% if lastLine %}
+        <div class="alert alert-success mt-4">
+            <strong>Dernier message ajouté :</strong> {{ lastLine }}
+        </div>
+    {% endif %}
+{% endblock %}
