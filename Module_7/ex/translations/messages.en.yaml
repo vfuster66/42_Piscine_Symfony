@@ -2,3 +2,6 @@
 ex02:
     number: 'The config number is %number%'
     count: '{0} none|{1} one|]1,9] number %count%'
+
+ex03:
+    test_string: 'hello world with 42 numbers'

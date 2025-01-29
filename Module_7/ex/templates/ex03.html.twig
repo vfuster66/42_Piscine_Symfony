@@ -1,0 +1,13 @@
+{% set testString = 'ex03.test_string'|trans %}
+
+<p>
+    {% if app.request.locale == 'fr' %}
+        Chaîne originale: {{ testString }}<br>
+        Mots en majuscules: {{ testString|uppercaseWords }}<br>
+        Nombre de chiffres: {{ countNumbers(testString) }}
+    {% else %}
+        Original string: {{ testString }}<br>
+        Uppercase words: {{ testString|uppercaseWords }}<br>
+        Number of digits: {{ countNumbers(testString) }}
+    {% endif %}
+</p>
