@@ -1,0 +1,4 @@
+# config/packages/app.yaml
+d07:
+    number: 42
+    enable: true
