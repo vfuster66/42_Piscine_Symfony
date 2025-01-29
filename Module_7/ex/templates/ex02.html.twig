@@ -1,0 +1,5 @@
+{% set countKey = count == 0 ? 'none' : (count == 1 ? 'one' : 'number') %}
+
+{{ 'ex02.number'|trans({'%number%': number}) }}
+<br>
+{{ 'ex02.count'|trans({'%count%': count}) }}

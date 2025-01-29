@@ -1,0 +1,4 @@
+# translations/messages.en.yaml
+ex02:
+    number: 'The config number is %number%'
+    count: '{0} none|{1} one|]1,9] number %count%'
