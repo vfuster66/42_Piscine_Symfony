@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Créer la Table</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ddd;
+        }
+
+        h1 {
+            color: #4CAF50;
+            font-size: 26px;
+            text-align: center;
+        }
+
+        p {
+            text-align: center;
+            font-size: 18px;
+            background-color: #e8f5e9;
+            color: #4CAF50;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #4CAF50;
+        }
+
+        a {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+            color: white;
+            background-color: #4CAF50;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Création de la Table</h1>
+        <p>{{ message }}</p>
+        <a href="{{ path('home') }}">⬅ Retour à l'accueil</a>
+    </div>
+</body>
+</html>

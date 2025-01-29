@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifier une personne</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ddd;
+        }
+
+        h1 {
+            color: #4CAF50;
+            font-size: 26px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+            background-color: #4CAF50;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        a:hover {
+            background-color: #45a049;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+
+        input, textarea, button {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .message.success {
+            background-color: #e8f5e9;
+            color: #4CAF50;
+            border-color: #4CAF50;
+        }
+
+        .message.error {
+            background-color: #fbe9e7;
+            color: #e53935;
+            border-color: #e53935;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+                margin: 20px;
+            }
+
+            h1 {
+                font-size: 22px;
+            }
+
+            a {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+
+            input, textarea, button {
+                font-size: 14px;
+                padding: 10px;
+            }
+
+            button {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="{{ path('ex09_view') }}">⬅ Retour à la liste</a>
+        <h1>Modifier une personne</h1>
+
+        {% for message in app.flashes('success') %}
+            <div class="message success">{{ message }}</div>
+        {% endfor %}
+        {% for message in app.flashes('error') %}
+            <div class="message error">{{ message }}</div>
+        {% endfor %}
+
+        {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <button type="submit">Mettre à jour</button>
+        {{ form_end(form) }}
+    </div>
+</body>
+</html>

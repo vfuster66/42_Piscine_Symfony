@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détails de l'employé</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f4;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ddd;
+        }
+
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+            margin-bottom: 20px;
+            font-size: 26px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #4CAF50;
+            font-weight: bold;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .info-group {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            color: #333;
+            font-size: 16px;
+            padding-left: 10px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 5px;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .actions {
+            margin-top: 30px;
+            text-align: center;
+            padding-top: 20px;
+            border-top: 2px solid #eee;
+        }
+
+        .subordinates-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #eee;
+        }
+
+        .subordinates-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .subordinate-item {
+            padding: 10px;
+            margin: 5px 0;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .btn {
+                display: block;
+                width: 100%;
+                margin: 10px 0;
+            }
+
+            .subordinate-item {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="{{ path('home') }}">⬅ Retour à l'accueil</a>
+        <h1>Détails de l'employé</h1>
+
+        <div class="info-group">
+            <div class="info-label">Nom complet</div>
+            <div class="info-value">{{ employee.firstname }} {{ employee.lastname }}</div>
+        </div>
+
+        <div class="info-group">
+            <div class="info-label">Email</div>
+            <div class="info-value">{{ employee.email }}</div>
+        </div>
+
+        <div class="info-group">
+            <div class="info-label">Date de naissance</div>
+            <div class="info-value">{{ employee.birthdate|date('d/m/Y') }}</div>
+        </div>
+
+        <div class="info-group">
+            <div class="info-label">Position</div>
+            <div class="info-value">{{ employee.position }}</div>
+        </div>
+
+        <div class="info-group">
+            <div class="info-label">Manager</div>
+            <div class="info-value">
+                {% if employee.manager %}
+                    {{ employee.manager.firstname }} {{ employee.manager.lastname }}
+                {% else %}
+                    Aucun manager
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="info-group">
+            <div class="info-label">Heures de travail</div>
+            <div class="info-value">{{ employee.hours }}h par jour</div>
+        </div>
+
+        <div class="info-group">
+            <div class="info-label">Salaire</div>
+            <div class="info-value">{{ employee.salary }}€</div>
+        </div>
+
+        <div class="info-group">
+            <div class="info-label">Date d'embauche</div>
+            <div class="info-value">{{ employee.employedSince|date('d/m/Y') }}</div>
+        </div>
+
+        {% if employee.employedUntil %}
+            <div class="info-group">
+                <div class="info-label">Date de fin d'emploi</div>
+                <div class="info-value">{{ employee.employedUntil|date('d/m/Y') }}</div>
+            </div>
+        {% endif %}
+
+        <div class="info-group">
+            <div class="info-label">Statut</div>
+            <div class="info-value">{{ employee.active ? 'Actif' : 'Inactif' }}</div>
+        </div>
+
+        {% if employee.subordinates|length > 0 %}
+            <div class="subordinates-section">
+                <h2>Employés sous sa responsabilité</h2>
+                <ul class="subordinates-list">
+                    {% for subordinate in employee.subordinates %}
+                        <li class="subordinate-item">
+                            {{ subordinate.firstname }} {{ subordinate.lastname }} - {{ subordinate.position }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+        <div class="actions">
+            <a href="{{ path('ex13_edit', {id: employee.id}) }}" class="btn btn-primary">Modifier</a>
+            <a href="{{ path('ex13_delete', {id: employee.id}) }}" 
+               class="btn btn-danger" 
+               onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet employé ?')">
+                Supprimer
+            </a>
+            <a href="{{ path('ex13_list') }}" class="btn btn-success">Retour à la liste</a>
+        </div>
+    </div>
+</body>
+</html>

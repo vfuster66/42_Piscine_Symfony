@@ -1,0 +1,18 @@
+services:
+    _defaults:
+        autowire: true      # Injecte automatiquement les dépendances
+        autoconfigure: true # Enregistre automatiquement les services comme commandes, etc.
+        public: false       # Définit les services comme privés par défaut
+
+    # Configure tous les services dans le dossier src/
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    # Rendre les contrôleurs disponibles comme services
+    App\Controller\:
+        resource: '../src/Controller'
+        tags: ['controller.service_arguments']

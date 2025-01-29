@@ -1,0 +1,63 @@
+{# templates/post/index.html.twig #}
+{% extends 'base.html.twig' %}
+{% block title %}Posts{% endblock %}
+{% block body %}
+<div class="max-w-4xl mx-auto">
+    <h1 class="text-3xl font-bold text-gray-900 mb-6">Posts</h1>
+    {# Bouton pour créer un nouveau post #}
+    <div class="mb-6 flex justify-end">
+        <a href="{{ path('post_new') }}"
+           class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 shadow">
+            Create New Post
+        </a>
+    </div>
+    {# Liste des posts #}
+    <div class="space-y-4">
+        {% if posts is not empty %}
+            {% for post in posts %}
+                <div class="bg-white shadow-md rounded-lg p-4">
+                    <div class="flex justify-between items-start">
+                        <div class="flex-grow">
+                            <h2 class="text-xl font-semibold text-indigo-700">
+                                <a href="{{ path('post_show', {'id': post.id}) }}">{{ post.title }}</a>
+                            </h2>
+                            <p class="text-sm text-gray-600">
+                                By <span class="font-medium">{{ post.author.username }}</span> 
+                                (Reputation: {{ post.author.reputationScore }}) 
+                                on {{ post.created|date('Y-m-d H:i') }}
+                            </p>
+                            <p class="mt-2 text-gray-700 line-clamp-2">
+                                {{ post.content[:100] ~ '...' }} {# Aperçu du contenu, maximum 100 caractères #}
+                            </p>
+                        </div>
+                        <div class="ml-4 text-sm flex flex-col items-end">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-green-600 flex items-center">
+                                    <span class="mr-1">👍</span>
+                                    <span>{{ post.likesCount }}</span>
+                                </span>
+                                <span class="text-red-600 flex items-center">
+                                    <span class="mr-1">👎</span>
+                                    <span>{{ post.dislikesCount }}</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    {% if app.user and app.user.hasVotedOnPost(post) %}
+                        <div class="mt-2 text-xs text-gray-500">
+                            Your vote: 
+                            {% if app.user.hasVotedOnPost(post).isLike %}
+                                <span class="text-green-600">Liked</span>
+                            {% else %}
+                                <span class="text-red-600">Disliked</span>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-gray-600">No posts available. Be the first to create one!</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

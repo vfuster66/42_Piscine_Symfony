@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insert Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        h1 {
+            color: #4CAF50;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+
+        input, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #4CAF50;
+            background-color: #e8f5e9;
+            color: #4CAF50;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="{{ path('home') }}">⬅ Retour à l'accueil</a>
+        <h1>Insérer des données dans la table "persons"</h1>
+
+        {% if message %}
+            <div class="message">
+                {{ message }}
+            </div>
+        {% endif %}
+
+        <form method="post" action="{{ path('ex04_insert_data') }}">
+            <label for="username">Nom d'utilisateur :</label>
+            <input type="text" name="username" id="username" placeholder="Entrez le nom d'utilisateur" required>
+
+            <label for="name">Nom :</label>
+            <input type="text" name="name" id="name" placeholder="Entrez le nom" required>
+
+            <label for="email">Email :</label>
+            <input type="email" name="email" id="email" placeholder="Entrez l'adresse email" required>
+
+            <label for="enable">Activer :</label>
+            <input type="checkbox" name="enable" id="enable" value="1">
+
+            <label for="birthdate">Date de naissance :</label>
+            <input type="date" name="birthdate" id="birthdate" required>
+
+            <label for="address">Adresse :</label>
+            <textarea name="address" id="address" placeholder="Entrez l'adresse complète" required></textarea>
+
+            <button type="submit">Insérer les données</button>
+        </form>
+    </div>
+</body>
+</html>

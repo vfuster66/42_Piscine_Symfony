@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercice 11 - SQL avec tri et filtre</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f9f9f9;
+            color: #333;
+        }
+
+        h1 {
+            color: #4CAF50;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .container {
+            max-width: 90%;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        a {
+            text-decoration: none;
+            color: #4CAF50;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+            justify-content: space-between;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+        }
+
+        input, select, button {
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            background: #4CAF50;
+            color: white;
+            cursor: pointer;
+            border: none;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #45a049;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: #4CAF50;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background: #f2f2f2;
+        }
+
+        tr:hover {
+            background: #f1f1f1;
+        }
+
+        /* Styles responsives */
+        @media (max-width: 768px) {
+            form {
+                flex-direction: column;
+            }
+
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+
+            th {
+                display: none;
+            }
+
+            tr {
+                margin-bottom: 20px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                border-radius: 8px;
+                background: #fff;
+            }
+
+            td {
+                display: flex;
+                justify-content: space-between;
+                padding: 10px;
+                text-align: left;
+                border: none;
+                border-bottom: 1px solid #ddd;
+            }
+
+            td:last-child {
+                border-bottom: none;
+            }
+
+            td:before {
+                content: attr(data-label);
+                font-weight: bold;
+                flex-shrink: 0;
+                margin-right: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="{{ path('home') }}">⬅ Retour à l'accueil</a>
+        <h1>Relations entre les tables</h1>
+
+        <form method="get" action="{{ path('ex11_view_filtered') }}">
+            <div>
+                <label for="name">Filtrer par nom :</label>
+                <input type="text" name="name" id="name" value="{{ app.request.query.get('name') }}">
+            </div>
+            <div>
+                <label for="city">Filtrer par ville :</label>
+                <input type="text" name="city" id="city" value="{{ app.request.query.get('city') }}">
+            </div>
+            <div>
+                <label for="sort">Trier par :</label>
+                <select name="sort" id="sort">
+                    <option value="name" {% if app.request.query.get('sort') == 'name' %}selected{% endif %}>Nom</option>
+                    <option value="email" {% if app.request.query.get('sort') == 'email' %}selected{% endif %}>Email</option>
+                    <option value="birthdate" {% if app.request.query.get('sort') == 'birthdate' %}selected{% endif %}>Date de naissance</option>
+                </select>
+            </div>
+            <div>
+                <label for="order">Ordre :</label>
+                <select name="order" id="order">
+                    <option value="ASC" {% if app.request.query.get('order') == 'ASC' %}selected{% endif %}>Croissant</option>
+                    <option value="DESC" {% if app.request.query.get('order') == 'DESC' %}selected{% endif %}>Décroissant</option>
+                </select>
+            </div>
+            <button type="submit">Appliquer</button>
+        </form>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Email</th>
+                    <th>Date de naissance</th>
+                    <th>Adresse</th>
+                    <th>Compte bancaire</th>
+                    <th>Villes</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in data %}
+                    <tr>
+                        <td data-label="Nom">{{ row.name }}</td>
+                        <td data-label="Email">{{ row.email }}</td>
+                        <td data-label="Date de naissance">{{ row.birthdate }}</td>
+                        <td data-label="Adresse">{{ row.address }}</td>
+                        <td data-label="Compte bancaire">
+                            {% if row.account_number %}
+                                {{ row.account_number }} ({{ row.balance }} €)
+                            {% else %}
+                                Aucun
+                            {% endif %}
+                        </td>
+                        <td data-label="Villes">{{ row.cities ?: 'Aucune ville' }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercice 05 - Liste des personnes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        h1 {
+            color: #4CAF50;
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        a {
+            text-decoration: none;
+            color: #4CAF50;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            max-width: 90%;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+            word-break: break-word;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .action {
+            text-align: center;
+        }
+
+        .delete-btn {
+            color: white;
+            background-color: #ff4d4d;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .delete-btn:hover {
+            background-color: #e60000;
+        }
+
+        /* Styles responsives */
+        @media screen and (max-width: 768px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+
+            th {
+                display: none;
+            }
+
+            tr {
+                margin-bottom: 15px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                background: #fff;
+                padding: 10px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+
+            td {
+                display: flex;
+                justify-content: space-between;
+                padding: 10px;
+                border: none;
+                border-bottom: 1px solid #ddd;
+            }
+
+            td:last-child {
+                border-bottom: none;
+            }
+
+            td:before {
+                content: attr(data-label);
+                font-weight: bold;
+                flex-shrink: 0;
+            }
+
+            .delete-btn {
+                display: block;
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="{{ path('home') }}">⬅ Retour à l'accueil</a>
+        <h1>Liste des personnes</h1>
+
+        {% for message in app.flashes('success') %}
+            <div class="message" style="color: green; text-align: center;">{{ message }}</div>
+        {% endfor %}
+        {% for message in app.flashes('error') %}
+            <div class="message" style="color: red; text-align: center;">{{ message }}</div>
+        {% endfor %}
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nom d'utilisateur</th>
+                    <th>Nom</th>
+                    <th>Email</th>
+                    <th>Activé</th>
+                    <th>Date de naissance</th>
+                    <th>Adresse</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for person in persons %}
+                    <tr>
+                        <td data-label="ID">{{ person.id }}</td>
+                        <td data-label="Nom d'utilisateur">{{ person.username }}</td>
+                        <td data-label="Nom">{{ person.name }}</td>
+                        <td data-label="Email">{{ person.email }}</td>
+                        <td data-label="Activé">{{ person.enable ? 'Oui' : 'Non' }}</td>
+                        <td data-label="Date de naissance">{{ person.birthdate|date('Y-m-d') }}</td>
+                        <td data-label="Adresse">{{ person.address }}</td>
+                        <td class="action" data-label="Actions">
+                            <a href="{{ path('ex04_delete', { id: person.id }) }}" 
+                               class="delete-btn delete-link" 
+                               onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette personne ?');">
+                                Supprimer
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

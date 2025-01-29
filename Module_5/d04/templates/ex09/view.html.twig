@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des personnes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ddd;
+        }
+
+        h1 {
+            color: #4CAF50;
+            font-size: 28px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #4CAF50;
+            font-weight: bold;
+            margin-bottom: 20px;
+            display: inline-block;
+            text-align: center;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .message {
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .success {
+            color: #155724;
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            color: #721c24;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .sub-section {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .sub-section h2 {
+            font-size: 18px;
+            color: #4CAF50;
+            margin-bottom: 10px;
+        }
+
+        .action {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .edit-btn, .delete-btn {
+            padding: 5px 15px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .edit-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .edit-btn:hover {
+            background-color: #45a049;
+        }
+
+        .delete-btn {
+            background-color: #ff4d4d;
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background-color: #e60000;
+        }
+
+        ul {
+            padding-left: 20px;
+            list-style-type: disc;
+        }
+
+        ul li {
+            margin-bottom: 5px;
+        }
+
+        @media (max-width: 768px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+
+            th {
+                display: none;
+            }
+
+            tr {
+                margin-bottom: 15px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                background: #fff;
+                padding: 10px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+
+            td {
+                display: flex;
+                justify-content: space-between;
+                padding: 10px;
+                border: none;
+                border-bottom: 1px solid #ddd;
+            }
+
+            td:last-child {
+                border-bottom: none;
+            }
+
+            td:before {
+                content: attr(data-label);
+                font-weight: bold;
+                flex-shrink: 0;
+            }
+
+            .action {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .edit-btn, .delete-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="{{ path('home') }}">⬅ Retour à l'accueil</a>
+        <h1>Liste des personnes</h1>
+
+        {% for message in app.flashes('success') %}
+            <div class="message success">{{ message }}</div>
+        {% endfor %}
+        {% for message in app.flashes('error') %}
+            <div class="message error">{{ message }}</div>
+        {% endfor %}
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nom d'utilisateur</th>
+                    <th>Nom</th>
+                    <th>Email</th>
+                    <th>Activé</th>
+                    <th>Date de naissance</th>
+                    <th>Statut marital</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for person in persons %}
+                    <tr>
+                        <td data-label="ID">{{ person.id }}</td>
+                        <td data-label="Nom d'utilisateur">{{ person.username }}</td>
+                        <td data-label="Nom">{{ person.name }}</td>
+                        <td data-label="Email">{{ person.email }}</td>
+                        <td data-label="Activé">{{ person.enable ? 'Oui' : 'Non' }}</td>
+                        <td data-label="Date de naissance">{{ person.birthdate|date('Y-m-d') }}</td>
+                        <td data-label="Statut marital">{{ person.maritalStatus }}</td>
+                        <td class="action" data-label="Actions">
+                            <a href="{{ path('ex09_edit', { id: person.id }) }}" class="edit-btn">Modifier</a>
+                            <a href="{{ path('ex09_delete', { id: person.id }) }}" 
+                               class="delete-btn delete-link" 
+                               onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette personne ?');">
+                                Supprimer
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="8">
+                            <div class="sub-section">
+                                <h2>Compte Bancaire</h2>
+                                {% if person.bankAccount %}
+                                    <p><strong>Numéro de compte :</strong> {{ person.bankAccount.accountNumber }}</p>
+                                    <p><strong>Solde :</strong> {{ person.bankAccount.balance }} €</p>
+                                {% else %}
+                                    <p>Aucun compte bancaire associé</p>
+                                {% endif %}
+                            </div>
+                            <div class="sub-section">
+                                <h2>Adresses</h2>
+                                {% if person.addresses|length > 0 %}
+                                    <ul>
+                                        {% for address in person.addresses %}
+                                            <li>{{ address.addressLine }}, {{ address.city }}, {{ address.postalCode }}, {{ address.country }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% else %}
+                                    <p>Aucune adresse associée</p>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

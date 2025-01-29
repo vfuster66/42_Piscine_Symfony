@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercice 12 - Ajouter une personne</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ddd;
+        }
+
+        h1 {
+            color: #4CAF50;
+            font-size: 26px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+            background-color: #4CAF50;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            display: inline-block;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        a:hover {
+            background-color: #45a049;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .message.success {
+            background-color: #e8f5e9;
+            color: #4CAF50;
+            border-color: #4CAF50;
+        }
+
+        .message.error {
+            background-color: #fbe9e7;
+            color: #e53935;
+            border-color: #e53935;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+
+        input, textarea, button, select {
+            width: calc(100% - 24px);
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .radio-group label {
+            font-weight: normal;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .radio-group input[type="radio"] {
+            margin: 0;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+                margin: 20px;
+            }
+
+            h1 {
+                font-size: 22px;
+            }
+
+            a {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+
+            input, textarea, button {
+                font-size: 14px;
+                padding: 10px;
+            }
+
+            button {
+                padding: 10px;
+            }
+
+            .radio-group {
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="{{ path('home') }}">⬅ Retour à l'accueil</a>
+        <h1>Ajouter une personne</h1>
+
+        {% for message in app.flashes('success') %}
+            <div class="message success">{{ message }}</div>
+        {% endfor %}
+        {% for message in app.flashes('error') %}
+            <div class="message error">{{ message }}</div>
+        {% endfor %}
+
+        {{ form_start(form) }}
+            <div>
+                {{ form_label(form.username) }}
+                {{ form_widget(form.username) }}
+            </div>
+            <div>
+                {{ form_label(form.name) }}
+                {{ form_widget(form.name) }}
+            </div>
+            <div>
+                {{ form_label(form.email) }}
+                {{ form_widget(form.email) }}
+            </div>
+            <div>
+                {{ form_label(form.enable) }}
+                {{ form_widget(form.enable) }}
+            </div>
+            <div>
+                {{ form_label(form.birthdate) }}
+                {{ form_widget(form.birthdate) }}
+            </div>
+            <div>
+                {{ form_label(form.address) }}
+                {{ form_widget(form.address) }}
+            </div>
+            <div>
+                {{ form_label(form.maritalStatus) }}
+                <div class="radio-group">
+                    {{ form_widget(form.maritalStatus) }}
+                </div>
+            </div>
+            <button type="submit">Enregistrer</button>
+        {{ form_end(form) }}
+    </div>
+</body>
+</html>

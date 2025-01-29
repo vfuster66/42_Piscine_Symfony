@@ -1,0 +1,124 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+<div class="bg-white overflow-hidden shadow rounded-lg">
+    <div class="px-4 py-5 sm:p-6">
+        {% if app.user %}
+            <h1 class="text-2xl font-bold text-gray-900 mb-4">Welcome {{ app.user.username }}!</h1>
+            <p class="text-gray-600">You are successfully logged in.</p>
+            
+            {# Section des boutons pour les actions utilisateur #}
+            <div class="mt-4 md:flex md:space-x-4">
+                <a href="{{ path('post_new') }}" 
+                class="w-full md:w-auto text-center flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 shadow transition">
+                    ✏️ Create New Post
+                </a>
+
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a href="{{ path('admin_users') }}" 
+                    class="w-full md:w-auto text-center flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 shadow transition mt-2 md:mt-0">
+                        🛠 Admin Dashboard
+                    </a>
+                {% endif %}
+            </div>
+
+        {% else %}
+            <h1 class="text-2xl font-bold text-gray-900 mb-4">Welcome {{ anonymousName }}!</h1>
+            <p class="text-gray-600 mb-4">
+                You are browsing as an anonymous user. It has been 
+                <strong id="timeElapsed">{{ timeElapsed }}</strong> seconds since your last interaction.
+            </p>
+            <script>
+                let timeElapsed = {{ timeElapsed }};
+                const timerElement = document.getElementById('timeElapsed');
+
+                setInterval(() => {
+                    timeElapsed++;
+                    timerElement.textContent = timeElapsed;
+                }, 1000);
+            </script>
+            <p class="text-gray-600 mb-4">
+                Please <a href="{{ path('app_login') }}" class="text-indigo-600 hover:text-indigo-800">sign in</a> 
+                or <a href="{{ path('app_register') }}" class="text-indigo-600 hover:text-indigo-800">create an account</a> 
+                to create and interact with posts.
+            </p>
+        {% endif %}
+    </div>
+</div>
+
+{# Section des posts #}
+<div class="mt-8">
+    <h2 class="text-2xl font-bold text-gray-900 mb-4">Recent Posts</h2>
+    {% if posts is not empty %}
+        <ul class="space-y-4">
+            {% for post in posts %}
+                <li class="bg-gray-50 p-4 rounded-lg shadow-md">
+                    <div class="flex justify-between items-start">
+                        <div class="flex-grow">
+                            <h3 class="text-lg font-semibold text-gray-800">
+                                {% if app.user %}
+                                    <a href="{{ path('post_show', {'id': post.id}) }}" class="hover:text-indigo-600">{{ post.title }}</a>
+                                {% else %}
+                                    {{ post.title }}
+                                {% endif %}
+                            </h3>
+                            <p class="text-sm text-gray-600">
+                                By <span class="font-medium">{{ post.author.username }}</span> 
+                                (Reputation: {{ post.author.reputationScore }}) 
+                                on {{ post.created|date('Y-m-d H:i') }}
+                            </p>
+                        </div>
+                        <div class="ml-4 flex items-center space-x-3">
+                            <span class="flex items-center text-green-600" title="Likes">
+                                <span class="mr-1">👍</span>
+                                <span>{{ post.likesCount }}</span>
+                            </span>
+                            <span class="flex items-center text-red-600" title="Dislikes">
+                                <span class="mr-1">👎</span>
+                                <span>{{ post.dislikesCount }}</span>
+                            </span>
+                            {% if app.user and app.user.hasVotedOnPost(post) %}
+                                <span class="text-xs text-gray-500">
+                                    {% if app.user.hasVotedOnPost(post).isLike %}
+                                        <span class="text-green-600">(Voted)</span>
+                                    {% else %}
+                                        <span class="text-red-600">(Voted)</span>
+                                    {% endif %}
+                                </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+
+        {# Pagination inchangée #}
+        <div class="mt-6">
+            <nav class="flex justify-center">
+                <ul class="inline-flex items-center -space-x-px">
+                    {% if previousPage %}
+                        <li>
+                            <a href="{{ path('app_home', {'page': previousPage}) }}" 
+                               class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700">
+                                Previous
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if nextPage %}
+                        <li>
+                            <a href="{{ path('app_home', {'page': nextPage}) }}" 
+                               class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700">
+                                Next
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    {% else %}
+        <p class="text-gray-600">No posts available. Be the first to create one!</p>
+    {% endif %}
+</div>
+{% endblock %}

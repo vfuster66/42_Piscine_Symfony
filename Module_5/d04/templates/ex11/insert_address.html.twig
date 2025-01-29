@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insert Address</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        h1 {
+            color: #4CAF50;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+
+        input, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #4CAF50;
+            background-color: #e8f5e9;
+            color: #4CAF50;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="{{ path('home') }}">⬅ Retour à l'accueil</a>
+        <h1>Insérer des données dans la table "addresses"</h1>
+
+        {% if message %}
+            <div class="message">
+                {{ message }}
+            </div>
+        {% endif %}
+
+        <form method="post" action="{{ path('ex11_insert_address') }}">
+            <label for="person_id">ID Personne :</label>
+            <input type="number" name="person_id" id="person_id" placeholder="ID de la personne" required>
+
+            <label for="address_line">Ligne d'adresse :</label>
+            <input type="text" name="address_line" id="address_line" placeholder="Adresse complète" required>
+
+            <label for="city">Ville :</label>
+            <input type="text" name="city" id="city" placeholder="Ville" required>
+
+            <label for="postal_code">Code postal :</label>
+            <input type="text" name="postal_code" id="postal_code" placeholder="Code postal" required>
+
+            <label for="country">Pays :</label>
+            <input type="text" name="country" id="country" placeholder="Pays" required>
+
+            <button type="submit">Insérer les données</button>
+        </form>
+    </div>
+</body>
+</html>

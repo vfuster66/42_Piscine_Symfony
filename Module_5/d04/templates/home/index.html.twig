@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accueil</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        h1 {
+            color: #4CAF50;
+            font-size: 28px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        li {
+            margin: 10px 0;
+        }
+
+        a {
+            display: block;
+            text-decoration: none;
+            color: white;
+            background-color: #4CAF50;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        a:hover {
+            background-color: #45a049;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Bienvenue sur l'application Symfony</h1>
+
+        <h2>Exercices 00 à 08</h2>
+        <ul>
+            <li><a href="{{ path('ex00_create_table') }}">Exercice 00 : Créer la table (SQL)</a></li>
+            <li><a href="{{ path('ex01_create_table') }}">Exercice 01 : Créer la table (ORM)</a></li>
+            <li><a href="{{ path('ex02_create_table') }}">Exercice 02 : Créer la table pour insertion et lecture</a></li>
+            <li><a href="{{ path('ex02_insert_data') }}">Exercice 02 : Insérer des données</a></li>
+            <li><a href="{{ path('ex02_view_data') }}">Exercice 02 : Voir les données</a></li>
+            <li><a href="{{ path('ex03_create_table') }}">Exercice 03 : Créer la table</a></li>
+            <li><a href="{{ path('ex03_create') }}">Exercice 03 : Ajouter une personne</a></li>
+            <li><a href="{{ path('ex03_view') }}">Exercice 03 : Voir la liste des personnes</a></li>
+            <li><a href="{{ path('ex04_create_table') }}">Exercice 04 : Créer la table pour insertion et lecture</a></li>
+            <li><a href="{{ path('ex04_insert_data') }}">Exercice 04 : Insérer des données</a></li>
+            <li><a href="{{ path('ex04_view_data') }}">Exercice 04 : Voir les données</a></li>
+            <li><a href="{{ path('ex05_create_table') }}">Exercice 05 : Créer la table</a></li>
+            <li><a href="{{ path('ex05_create') }}">Exercice 05 : Ajouter une personne</a></li>
+            <li><a href="{{ path('ex05_view') }}">Exercice 05 : Voir la liste des personnes</a></li>
+            <li><a href="{{ path('ex06_create_table') }}">Exercice 06 : Créer la table pour insertion et lecture</a></li>
+            <li><a href="{{ path('ex06_insert_data') }}">Exercice 06 : Insérer des données</a></li>
+            <li><a href="{{ path('ex06_view_data') }}">Exercice 06 : Voir les données</a></li>
+            <li><a href="{{ path('ex07_create_table') }}">Exercice 07 : Créer la table</a></li>
+            <li><a href="{{ path('ex07_create') }}">Exercice 07 : Ajouter une personne</a></li>
+            <li><a href="{{ path('ex07_view') }}">Exercice 07 : Voir la liste des personnes</a></li>
+        </ul>
+
+        <h2>Exercice 08 : Tables et relations</h2>
+        <ul>
+            <li><a href="{{ path('ex08_create_table') }}">Créer la table "persons"</a></li>
+            <li><a href="{{ path('ex08_insert_data') }}">Insérer des données dans "persons"</a></li>
+            <li><a href="{{ path('ex08_view_data') }}">Voir les données de "persons"</a></li>
+            <li><a href="{{ path('ex08_alter_persons_table') }}">Modifier la table "persons"</a></li>
+            <li><a href="{{ path('ex08_create_related_tables') }}">Créer les tables associées</a></li>
+            <li><a href="{{ path('ex08_view_relations') }}">Voir les relations entre les tables</a></li>
+            <li><a href="{{ path('ex08_insert_bank_account') }}">Insérer un compte bancaire</a></li>
+            <li><a href="{{ path('ex08_insert_address') }}">Insérer une adresse</a></li>
+        </ul>
+
+        <h2>Exercice 09 : ORM - Mise à jour et relations</h2>
+        <ul>
+            <li><a href="{{ path('ex09_create_table') }}">Créer la table "person"</a></li>
+            <li><a href="{{ path('ex09_create') }}">Ajouter une personne</a></li>
+            <li><a href="{{ path('ex09_view') }}">Voir la liste des personnes</a></li>
+            <li><a href="{{ path('ex09_add_bank_account') }}" class="btn btn-primary">Ajouter un compte bancaire</a></li>
+            <li><a href="{{ path('ex09_add_address') }}" class="btn btn-primary">Ajouter une adresse</a></li>
+            <li><a href="{{ path('ex09_view_relations') }}">Voir les relations entre les tables</a></li>
+        </ul>
+
+        <h2>Exercice 10 : SQL & ORM - Insert from File</h2>
+        <ul>
+            <li><a href="{{ path('ex10_create_table') }}">Créer la table "ex10_data"</a></li>
+            <li><a href="{{ path('ex10_process_file') }}">Insérer des données depuis un fichier</a></li>
+            <li><a href="{{ path('ex10_view_data') }}">Voir les données de "ex10_data"</a></li>
+        </ul>
+
+        <h2>Exercice 11 : SQL - Requêtes avec jointures, tri et conditions</h2>
+        <ul>
+            <li><a href="{{ path('ex11_create_table') }}">Créer la table "persons"</a></li>
+            <li><a href="{{ path('ex11_insert_data') }}">Insérer des données dans "persons"</a></li>
+            <li><a href="{{ path('ex11_view_data') }}">Voir les données de "persons"</a></li>
+            <li><a href="{{ path('ex11_alter_persons_table') }}">Modifier la table "persons"</a></li>
+            <li><a href="{{ path('ex11_create_related_tables') }}">Créer les tables associées</a></li>
+            <li><a href="{{ path('ex11_view_relations') }}">Voir les relations entre les tables</a></li>
+            <li><a href="{{ path('ex11_insert_bank_account') }}">Insérer un compte bancaire</a></li>
+            <li><a href="{{ path('ex11_insert_address') }}">Insérer une adresse</a></li>
+            <li><a href="{{ path('ex11_view_filtered') }}">Voir les données avec tri et filtre</a></li>
+        </ul>
+
+        <h2>Exercice 12 : Utilisation de l'ORM pour des requêtes avec jointures, tri et filtres</h2>
+        <ul>
+            <li><a href="{{ path('ex12_create_table') }}" class="btn btn-success">Créer la table "person"</a></li>
+            <li><a href="{{ path('ex12_create') }}" class="btn btn-primary">Ajouter une personne</a></li>
+            <li><a href="{{ path('ex12_view') }}" class="btn btn-info">Voir la liste des personnes</a></li>
+            <li><a href="{{ path('ex12_add_bank_account') }}" class="btn btn-warning">Ajouter un compte bancaire</a></li>
+            <li><a href="{{ path('ex12_add_address') }}" class="btn btn-warning">Ajouter une adresse</a></li>
+            <li><a href="{{ path('ex12_view_relations') }}" class="btn btn-dark">Voir les relations entre les tables</a></li>
+            <li><a href="{{ path('ex12_view_filtered') }}" class="btn btn-secondary">Voir avec filtres et tri</a></li>
+        </ul>
+
+        <h2>Exercice 13 : CRUD complet avec l'ORM</h2>
+        <ul>
+            <li><a href="{{ path('ex13_create') }}" class="btn btn-success">Ajouter un employé</a></li>
+            <li><a href="{{ path('ex13_list') }}" class="btn btn-info">Liste des employés</a></li>
+            <li><a href="{{ path('ex13_list', {'view': 'hierarchy'}) }}" class="btn btn-primary">Vue hiérarchique</a></li>
+            <li><a href="{{ path('ex13_list', {'view': 'active'}) }}" class="btn btn-warning">Employés actifs</a></li>
+            <li><a href="{{ path('ex13_list', {'view': 'position'}) }}" class="btn btn-dark">Vue par position</a></li>
+        </ul>
+
+        <h2>Exercice 14 : SQL - Injections fonctionnelles</h2>
+        <ul>
+            <li><a href="{{ path('ex14_create_table') }}" class="btn btn-success">Créer la table</a></li>
+            <li><a href="{{ path('ex14_login') }}" class="btn btn-primary">Login (Test injection SQL)</a></li>
+            <li><a href="{{ path('ex14_view') }}" class="btn btn-info">Voir les utilisateurs</a></li>
+        </ul>
+    </div>
+</body>
+</html>

@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block body %}
+<div class="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-6 md:p-8 lg:p-10">
+    {# Titre du post #}
+    <h1 class="text-3xl font-bold text-gray-900 mb-4 break-words">{{ post.title }}</h1>
+
+    {# Contenu du post #}
+    <p class="text-gray-700 text-lg mb-6 leading-relaxed break-words">
+        {{ post.content }}
+    </p>
+
+    {# Infos sur l'auteur et la date de création #}
+    <div class="text-sm text-gray-600 mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between">
+        <p class="flex items-center space-x-2">
+            <span class="font-medium">🖊️ {{ post.author.username }}</span> 
+            <span>(Reputation: <span class="font-semibold">{{ post.author.reputationScore }}</span>)</span>
+        </p>
+        <p class="text-xs text-gray-500">
+            📅 {{ post.created|date('Y-m-d H:i') }}
+        </p>
+    </div>
+
+    {# Affichage de la dernière modification si elle a eu lieu #}
+    {% if post.updatedAt %}
+        <p class="text-xs text-gray-500 italic mt-2">
+            ✏️ Last edited by <span class="font-medium">{{ post.lastEditor.username }}</span> 
+            on {{ post.updatedAt|date('Y-m-d H:i') }}
+        </p>
+    {% endif %}
+
+    {# Système de votes #}
+    <div class="mt-6 flex flex-wrap items-center gap-4">
+        <a href="{{ path('post_vote', {'id': post.id, 'type': 'like'}) }}" 
+           class="flex items-center gap-2 px-4 py-2 rounded-md text-white bg-green-600 hover:bg-green-700 shadow-md transition-all">
+            👍 Like ({{ likesCount }})
+        </a>
+        
+        <a href="{{ path('post_vote', {'id': post.id, 'type': 'dislike'}) }}"
+           class="flex items-center gap-2 px-4 py-2 rounded-md text-white bg-red-600 hover:bg-red-700 shadow-md transition-all">
+            👎 Dislike ({{ dislikesCount }})
+        </a>
+    </div>
+
+    {# Bouton d'édition du post si l'utilisateur est l'auteur du post ou a le privilège d'édition #}
+    {% if app.user and (app.user == post.author or app.user.isAdmin() or app.user.getReputationScore() >= 9) %}
+        <div class="mt-6">
+            <a href="{{ path('post_edit', {'id': post.id}) }}" 
+               class="flex items-center gap-2 px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 shadow-md transition-all">
+                ✏️ Edit Post
+            </a>
+        </div>
+    {% endif %}
+
+    {# Bouton de retour #}
+    <div class="mt-6">
+        <a href="{{ path('post_index') }}" 
+           class="flex items-center gap-2 px-4 py-2 border border-transparent text-sm font-medium rounded-md text-gray-700 bg-gray-300 hover:bg-gray-400 shadow-md transition-all">
+            ⬅️ Back to Posts
+        </a>
+    </div>
+</div>
+{% endblock %}
