@@ -1,0 +1,200 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h2 class="text-center mb-4">Créer un nouveau post</h2>
+
+    {% if app.user %}
+        {{ form_start(form, {'attr': {'id': 'postForm', 'class': 'needs-validation', 'novalidate': ''}}) }}
+            <div class="mb-3">
+                {{ form_label(form.title, 'Titre', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.title, {'attr': {'class': 'form-control', 'placeholder': 'Entrez le titre du post'}}) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(form.content, 'Contenu', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.content, {'attr': {'class': 'form-control', 'rows': 4, 'placeholder': 'Rédigez votre post ici...'}}) }}
+            </div>
+            <button type="submit" class="btn btn-custom">Publier</button>
+        {{ form_end(form) }}
+    {% endif %}
+
+    <hr>
+
+    <h3 class="text-center mt-4">Liste des posts</h3>
+    <div id="postsList">
+        {% for post in posts %}
+            <div class="card mb-3" data-id="{{ post.id }}">
+                <div class="card-body">
+                    <h5 class="card-title post-title" style="cursor: pointer; color: #007bff;" data-id="{{ post.id }}">{{ post.title }}</h5>
+                    <p class="text-muted">Publié le {{ post.created|date('d/m/Y H:i') }}</p>
+                    <div id="postDetails-{{ post.id }}" class="post-details mt-3 p-3 bg-light rounded" style="display: none;"></div>
+                    {% if app.user %}
+                        <button class="btn btn-danger btn-sm delete-post mt-2" data-id="{{ post.id }}">Supprimer</button>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    let ws;
+    
+    function connectWebSocket() {
+        ws = new WebSocket('ws://localhost:8081');
+
+        ws.onopen = function() {
+            console.log('WebSocket connecté');
+        };
+
+        ws.onmessage = function(event) {
+            console.log('Message reçu:', event.data);
+            try {
+                const data = JSON.parse(event.data);
+                
+                if (data.type === 'post.created') {
+                    console.log('Nouveau post reçu:', data.post);
+                    addNewPost(data.post);
+                } else if (data.type === 'post.deleted') {
+                    console.log('Suppression de post reçue:', data.postId);
+                    removePost(data.postId);
+                }
+            } catch (error) {
+                console.error('Erreur lors du traitement du message:', error);
+            }
+        };
+
+        ws.onclose = function() {
+            console.log('WebSocket déconnecté - tentative de reconnexion...');
+            setTimeout(connectWebSocket, 1000);
+        };
+
+        ws.onerror = function(error) {
+            console.error('Erreur WebSocket:', error);
+        };
+    }
+
+    connectWebSocket();
+
+    function addNewPost(post) {
+        const postsList = document.getElementById('postsList');
+
+        if (!postsList) {
+            console.error("❌ Impossible de trouver l'élément #postsList");
+            return;
+        }
+
+        if (document.querySelector(`[data-id='${post.id}']`)) return; // Évite les doublons
+
+        const newPost = document.createElement('div');
+        newPost.classList.add('card', 'mb-3');
+        newPost.setAttribute('data-id', post.id);
+        newPost.innerHTML = `
+            <div class="card-body">
+                <h5 class="card-title post-title" style="cursor: pointer; color: #007bff;" data-id="${post.id}">${post.title}</h5>
+                <p class="text-muted">Publié le ${post.created}</p>
+                <div id="postDetails-${post.id}" class="post-details mt-3 p-3 bg-light rounded" style="display: none;"></div>
+                {% if app.user %}
+                    <button class="btn btn-danger btn-sm delete-post mt-2" data-id="${post.id}">Supprimer</button>
+                {% endif %}
+            </div>
+        `;
+        postsList.prepend(newPost);
+    }
+
+    function removePost(postId) {
+        const postToDelete = document.querySelector(`[data-id='${postId}']`);
+        if (postToDelete) {
+            postToDelete.remove();
+        }
+    }
+
+    // Gestion du formulaire d'ajout de post
+    const postForm = document.getElementById('postForm');
+    if (postForm) {
+        postForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            
+            fetch('{{ path('post_new') }}', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(`❌ ${data.error}`);
+                } else {
+                    alert(`✅ ${data.message}`);
+                    this.reset();
+                }
+            })
+            .catch(error => {
+                console.error("❌ Erreur lors de la création du post :", error);
+                alert("Une erreur est survenue lors de la création du post.");
+            });
+        });
+    }
+
+    // Gestion de l'affichage des détails du post
+    document.getElementById('postsList').addEventListener('click', function(e) {
+        if (e.target.classList.contains('post-title')) {
+            const postId = e.target.getAttribute('data-id');
+            const detailsDiv = document.getElementById(`postDetails-${postId}`);
+
+            if (detailsDiv.style.display === 'block') {
+                detailsDiv.style.display = 'none';
+                return;
+            }
+
+            fetch(`/view/${postId}`)
+            .then(response => response.json())
+            .then(data => {
+                detailsDiv.innerHTML = `
+                    <h4>${data.title}</h4>
+                    <p>${data.content}</p>
+                    <p class="text-muted">Publié le ${data.created}</p>
+                `;
+                detailsDiv.style.display = 'block';
+            })
+            .catch(error => {
+                console.error("❌ Erreur lors du chargement des détails :", error);
+                alert("Une erreur est survenue lors du chargement des détails.");
+            });
+        }
+    });
+
+    // Suppression d'un post via Ajax
+    document.getElementById('postsList').addEventListener('click', function(e) {
+        if (e.target.classList.contains('delete-post')) {
+            if (!confirm("❗ Êtes-vous sûr de vouloir supprimer ce post ?")) {
+                return;
+            }
+
+            const postId = e.target.getAttribute('data-id');
+            fetch(`/delete/${postId}`, { 
+                method: 'DELETE',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(`❌ ${data.error}`);
+                } else {
+                    alert(`✅ ${data.message}`);
+                }
+            })
+            .catch(error => {
+                console.error("❌ Erreur lors de la suppression du post :", error);
+                alert("Une erreur est survenue lors de la suppression du post.");
+            });
+        }
+    });
+});
+</script>
+
+{% endblock %}

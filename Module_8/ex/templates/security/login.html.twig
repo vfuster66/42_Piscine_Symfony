@@ -1,0 +1,24 @@
+{# templates/security/login.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h2 class="text-center mb-4">Connexion</h2>
+    
+    {% if error %}
+        <div class="alert alert-danger text-center">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+
+    <form method="post" class="needs-validation" novalidate>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email :</label>
+            <input type="email" value="{{ last_username }}" name="_username" id="email" class="form-control" required autofocus placeholder="Votre email">
+        </div>
+
+        <div class="mb-3">
+            <label for="password" class="form-label">Mot de passe :</label>
+            <input type="password" name="_password" id="password" class="form-control" required placeholder="Votre mot de passe">
+        </div>
+
+        <button type="submit" class="btn btn-custom">Se connecter</button>
+    </form>
+{% endblock %}
